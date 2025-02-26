@@ -465,53 +465,53 @@ console.log(resultado);*/
 //EJEMPLO EN VIVO FINAL productos con iva:
 
 
-const IVA = 1.21;
+// const IVA = 1.21;
 
-const calcularIva = (precio) => {
- return precio * IVA;
-};
+// const calcularIva = (precio) => {
+//  return precio * IVA;
+// };
 
-let condition = true;
-let totalCarrito = 0;
+// let condition = true;
+// let totalCarrito = 0;
 
-do {
+// do {
 
- let eleccion = prompt (`Bienvenido a Alto Voltaje, selecciona un producto:
-   1- Remera West Coast Choppers 
-   2- Remera Bullet GT-R R34
-   3- Remera Mazda RX7
-   4- Ver total (con IVA)
-   ESC- Salir de la tienda
-   `);
+//  let eleccion = prompt (`Bienvenido a Alto Voltaje, selecciona un producto:
+//    1- Remera West Coast Choppers 
+//    2- Remera Bullet GT-R R34
+//    3- Remera Mazda RX7
+//    4- Ver total (con IVA)
+//    ESC- Salir de la tienda
+//    `);
 
    
-   switch (eleccion) {
-     case "1":
-       totalCarrito += calcularIva(15000);
-       break;
+//    switch (eleccion) {
+//      case "1":
+//        totalCarrito += calcularIva(15000);
+//        break;
 
-       case "2":
-         totalCarrito += calcularIva(18000);
-       break;
+//        case "2":
+//          totalCarrito += calcularIva(18000);
+//        break;
 
-       case "3":
-         totalCarrito += calcularIva(16000);
-       break;
+//        case "3":
+//          totalCarrito += calcularIva(16000);
+//        break;
 
-       case "4":
-       alert(`El total del carrito es $${totalCarrito}`);
-       break;
+//        case "4":
+//        alert(`El total del carrito es $${totalCarrito}`);
+//        break;
 
-       case "ESC":
-         alert("¡Muchas gracias por pasar por nuestra tienda!")
-         condition = false
-         break;
-         default:
-           alert("Esa opción no está disponible")
-           break;
-   }
+//        case "ESC":
+//          alert("¡Muchas gracias por pasar por nuestra tienda!")
+//          condition = false
+//          break;
+//          default:
+//            alert("Esa opción no está disponible")
+//            break;
+//    }
 
-} while (condition)
+// } while (condition)
 
 
 

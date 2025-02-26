@@ -73,14 +73,14 @@ do {
 //ITERACIÓN
 
 const productos = [
-  { nombre: "Remera WC", precio: 15000 },
-  { nombre: "Remera Bullet", precio: 18000 },
-  { nombre: "Remera RX7", precio: 16000 }
+  { nombre: "Remera WC", precio: 15000 , stock: true},
+  { nombre: "Remera Bullet", precio: 18000 , stock: true},
+  { nombre: "Remera RX7", precio: 16000 , stock: true }
 ];
 
 for (let i = 0; i < productos.length; i++) {
   const producto = productos[i];
-  console.log(`${producto.nombre} - $${producto.precio}`);
+  console.log(`${producto.nombre} - $${producto.precio} ${producto.stock}`);
 }
 
 
