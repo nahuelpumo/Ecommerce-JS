@@ -75,7 +75,7 @@ do {
 const productos = [
   { nombre: "Remera WC", precio: 15000 , stock: true},
   { nombre: "Remera Bullet", precio: 18000 , stock: true},
-  { nombre: "Remera RX7", precio: 16000 , stock: true }
+  { nombre: "Remera RX7", precio: 16000 , stock: true}
 ];
 
 for (let i = 0; i < productos.length; i++) {
