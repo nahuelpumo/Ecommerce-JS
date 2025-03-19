@@ -1,86 +1,91 @@
-//PROMPS + ALERT INICIO
- let nombreApellido = prompt("Introduzca su nombre y apellido:")
-
- console.log(nombreApellido);
-
-
- alert("Hola " + nombreApellido + ". Presioná la tecla Enter.")
-
-
-
-
-//CONFIRM
-
-let resultado = confirm("¿Es la primera vez que ingresás a nuestra tienda?")
-
-
-console.log(resultado);
-
-
-
-// CARRITO
-
-
-const IVA = 1.21;
-
-const calcularIva = (precio) => {
-  return precio * IVA;
-};
-
-let condition = true;
-let totalCarrito = 0;
-
-do {
-
-  let eleccion = prompt (`Bienvenido a Alto Voltaje, selecciona un producto:
-    1- Remera West Coast Choppers 
-    2- Remera Bullet GT-R R34
-    3- Remera Mazda RX7
-    4- Ver total (con IVA)
-    ESC- Salir de la tienda
-    `);
-
-    
-    switch (eleccion) {
-      case "1":
-        totalCarrito += calcularIva(15000);
-        break;
-
-        case "2":
-          totalCarrito += calcularIva(18000);
-        break;
-
-        case "3":
-          totalCarrito += calcularIva(16000);
-        break;
-
-        case "4":
-        alert(`El total del carrito es $${totalCarrito}`);
-        break;
-
-        case "ESC":
-          alert("¡Muchas gracias por pasar por nuestra tienda!")
-          condition = false
-          break;
-          default:
-            alert("Esa opción no está disponible")
-            break;
-    }
-
-} while (condition)
-
-
 //ITERACIÓN
-
 const productos = [
-  { nombre: "Remera WC", precio: 15000 , stock: true},
-  { nombre: "Remera Bullet", precio: 18000 , stock: true},
-  { nombre: "Remera RX7", precio: 16000 , stock: true}
+  { nombre: "Remera WC", precio: 15000, stock: true },
+  { nombre: "Remera Bullet", precio: 18000, stock: true },
+  { nombre: "Remera RX7", precio: 16000, stock: true }
 ];
 
 for (let i = 0; i < productos.length; i++) {
   const producto = productos[i];
   console.log(`${producto.nombre} - $${producto.precio} ${producto.stock}`);
 }
+
+// FUNCION CONSTRUCTORA PRODUCTOSS
+function Producto(id, nombre, precio) {
+  this.id = id;
+  this.nombre = nombre;
+  this.precio = precio;
+}
+
+// RECUPERAR CARITO LOCALSTORAGE
+let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
+// Función AGREGAR CARRITO
+function agregarAlCarrito(producto) {
+  carrito.push(producto);
+  actualizarLocalStorage();
+  mostrarCarrito();
+}
+
+// FUNCION ELIMIENAR CARRITO
+function eliminarDelCarrito(id) {
+  carrito = carrito.filter(producto => producto.id !== id);
+  actualizarLocalStorage();
+  mostrarCarrito();
+}
+
+// CALCULAR CARRITO
+function calcularTotal() {
+  return carrito.reduce((total, producto) => total + producto.precio, 0);
+}
+
+// CARRITO LOCALSTORAGE
+function actualizarLocalStorage() {
+  localStorage.setItem("carrito", JSON.stringify(carrito));
+}
+
+// PRODUCTOS DOM
+function mostrarCarrito() {
+  const carritoContainer = document.getElementById("carrito-lista");
+  if (!carritoContainer) {
+      console.error("El contenedor del carrito no existe.");
+      return;
+  }
+
+  carritoContainer.innerHTML = "";
+  carrito.forEach(producto => {
+      const item = document.createElement("div");
+      item.textContent = `${producto.nombre} - $${producto.precio}`;
+      const btnEliminar = document.createElement("button");
+      btnEliminar.textContent = "Eliminar";
+      btnEliminar.onclick = () => eliminarDelCarrito(producto.id);
+      item.appendChild(btnEliminar);
+      carritoContainer.appendChild(item);
+  });
+
+  const totalElemento = document.getElementById("total");
+  if (totalElemento) {
+      totalElemento.textContent = `Total: $${calcularTotal()}`;
+  } else {
+      console.error("El elemento con id='total' no existe en el DOM.");
+  }
+}
+
+// EVENTO BOTON AGREGARCARRITO
+document.querySelectorAll(".producto button").forEach(boton => {
+    boton.addEventListener("click", (event) => {
+        const productoDiv = event.target.closest(".producto");
+        const id = productoDiv.getAttribute("data-id");
+        const nombre = productoDiv.getAttribute("data-nombre");
+        const precio = parseFloat(productoDiv.getAttribute("data-precio"));
+        const nuevoProducto = new Producto(id, nombre, precio);
+        agregarAlCarrito(nuevoProducto);
+    });
+});
+
+// INIT DOM CARRITO
+document.addEventListener("DOMContentLoaded", mostrarCarrito);
+
+
 
 

@@ -1,4 +1,4 @@
-/* Estilos generales */
+/* RESET */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -34,11 +34,11 @@ body {
     margin: 1rem;
   }
   
-  h2 {
+  h1 , h2 {
     text-align: center;
   }
   
-  /* Estilos para los productos */
+  /* PRODUCTOS */
   .productos {
     display: flex;
     justify-content: space-around;
@@ -71,7 +71,7 @@ body {
     background-color: #218838;
   }
   
-  /* Estilos para el carrito */
+  /* CARRITO */
   #carrito-lista {
     list-style-type: none;
     padding: 0;
@@ -86,3 +86,9 @@ body {
     font-size: 1.5rem;
   }
   
+
+  /* FOOTER */
+
+  #footer {
+    background-color: #333;
+  }
