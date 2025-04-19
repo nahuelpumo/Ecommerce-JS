@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ecommerce - Remeras Estampadas</title>
   <link rel="stylesheet" href="css/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+  <script src="js/app.js" defer></script>
 </head>
 <body>
   <header>
@@ -22,32 +25,78 @@
     <h1>Alto Voltaje</h1>
     <h2>Remeras Estampadas</h2>
     <div class="productos">
-      <div class="producto" data-id="1" data-nombre="Remera WC Choppers" data-precio="15000">
-        <img src="images/choppersfoto.webp" alt="Remera 1">
-        <h3>Remera WC Choppers</h3>
-        <p>$15.000</p>
-        <button id="agregarProducto">Agregar al carrito</button>
-      </div>
-      <div class="producto" data-id="2" data-nombre="Remera Bullet GTR" data-precio="18000">
-        <img src="images/gtrfoto.webp" alt="Remera 2">
-        <h3>Remera Bullet GTR</h3>
-        <p>$18.000</p>
-        <button id="agregarProducto">Agregar al carrito</button>
-      </div>
-      <div class="producto" data-id="3" data-nombre="Remera Mazda RX7" data-precio="16000">
-        <img src="images/mazdafoto.png" alt="Remera 3">
+      <section class="productos row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4" id="productos-container">
+      <div class="producto" data-id="4" data-nombre="Remera MazdaRX7" data-precio="17500">
+        <img src="images/mazdafoto.png" alt="Remera Mazda">
         <h3>Remera Mazda RX7</h3>
-        <p>$16.000</p>
-        <button id="agregarProducto">Agregar al carrito</button>
+        <p>$17.500</p>
+        <button class="btn btn-primary btn-agregar">Agregar al carrito</button>
       </div>
+      
+      <div class="producto" data-id="5" data-nombre="Remera Skyline R34" data-precio="18500">
+        <img src="images/gtrfoto.webp" alt="Remera Skyline R34">
+        <h3>Remera Skyline R34</h3>
+        <p>$18.500</p>
+        <button class="btn btn-primary btn-agregar">Agregar al carrito</button>
+      </div>
+      
+      <div class="producto" data-id="6" data-nombre="Remera WC Choppers" data-precio="19000">
+        <img src="images/choppersfoto.webp" alt="Remera Choppers">
+        <h3>Remera WCC</h3>
+        <p>$19.000</p>
+        <button class="btn btn-primary btn-agregar">Agregar al carrito</button>
+      </div>
+      
+      <div class="producto" data-id="7" data-nombre="Remera Corvette C8" data-precio="19500">
+        <img src="images/corvette.webp" alt="Remera Corvette C8">
+        <h3>Remera Corvette C8</h3>
+        <p>$19.500</p>
+        <button class="btn btn-primary btn-agregar">Agregar al carrito</button>
+      </div>
+      
+      <div class="producto" data-id="8" data-nombre="Remera Lancer Evo IX" data-precio="17000">
+        <img src="images/evo.jpg" alt="Remera Lancer Evo IX">
+        <h3>Remera Lancer Evo IX</h3>
+        <p>$17.000</p>
+        <button class="btn btn-primary btn-agregar">Agregar al carrito</button>
+      </div>
+      
+      <div class="producto" data-id="9" data-nombre="Remera Camaro SS" data-precio="18500">
+        <img src="images/camaro.jpg" alt="Remera Camaro SS">
+        <h3>Remera Camaro SS</h3>
+        <p>$18.500</p>
+        <button class="btn btn-primary btn-agregar">Agregar al carrito</button>
+      </div>
+      
+      <div class="producto" data-id="10" data-nombre="Remera Civic Type-R" data-precio="16000">
+        <img src="images/civic.webp" alt="Remera Civic Type-R">
+        <h3>Remera Civic Type-R</h3>
+        <p>$16.000</p>
+        <button class="btn btn-primary btn-agregar">Agregar al carrito</button>
+      </div>
+      
     </div>
   </section>
 
-  <section id="carrito" class="section">
-    <h2>Carrito de Compras</h2>
+ 
+<button class="btn btn-success m-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCarrito">
+  Ver Carrito
+</button>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCarrito" aria-labelledby="offcanvasLabel">
+  <div class="offcanvas-header">
+    <h5 id="offcanvasLabel">Carrito de Compras</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+  </div>
+  <div class="offcanvas-body">
     <div id="carrito-lista"></div>
-    <p id="total">Total: $0</p>
-  </section>
+    <p id="total" class="fw-bold mt-3">Total: $0</p>
+    <button id="finalizarCompra" class="btn btn-warning">Finalizar Compra</button>
+  </div>
+</div>
+
+
+
 </main>
  
 
@@ -62,6 +111,8 @@
   </footer>
   
 
-  <script src="js/app.js" defer></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

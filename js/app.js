@@ -1,91 +1,123 @@
-//ITERACIÓN
 const productos = [
-  { nombre: "Remera WC", precio: 15000, stock: true },
-  { nombre: "Remera Bullet", precio: 18000, stock: true },
-  { nombre: "Remera RX7", precio: 16000, stock: true }
+  { id: 1, nombre: "Remera WC Choppers", precio: 15000 },
+  { id: 2, nombre: "Remera Bullet GTR", precio: 18000 },
+  { id: 3, nombre: "Remera Mazda RX7", precio: 16000 },
+  { id: 4, nombre: "Remera Supra MK4", precio: 17500 },
+  { id: 5, nombre: "Remera Skyline R34", precio: 18500 },
+  { id: 6, nombre: "Remera Mustang 67", precio: 19000 },
+  { id: 7, nombre: "Remera Corvette C8", precio: 19500 },
+  { id: 8, nombre: "Remera Lancer Evo", precio: 17000 },
+  { id: 9, nombre: "Remera Camaro SS", precio: 18500 },
+  { id: 10, nombre: "Remera Civic Type-R", precio: 16000 }
 ];
 
-for (let i = 0; i < productos.length; i++) {
-  const producto = productos[i];
-  console.log(`${producto.nombre} - $${producto.precio} ${producto.stock}`);
-}
-
-// FUNCION CONSTRUCTORA PRODUCTOSS
-function Producto(id, nombre, precio) {
+function Producto(id, nombre, precio, cantidad = 1) {
   this.id = id;
   this.nombre = nombre;
   this.precio = precio;
+  this.cantidad = cantidad;
 }
 
-// RECUPERAR CARITO LOCALSTORAGE
-let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+let carrito = [];
 
-// Función AGREGAR CARRITO
-function agregarAlCarrito(producto) {
-  carrito.push(producto);
+try {
+  const guardado = JSON.parse(localStorage.getItem("carrito"));
+  if (Array.isArray(guardado)) carrito = guardado;
+} catch (e) {
+  localStorage.removeItem("carrito");
+}
+
+function agregarAlCarrito(nuevoProd) {
+  const prodExistente = carrito.find(p => p.id === nuevoProd.id);
+  if (prodExistente) {
+    prodExistente.cantidad += 1;
+  } else {
+    carrito.push(nuevoProd);
+  }
   actualizarLocalStorage();
   mostrarCarrito();
+
+  Swal.fire({
+    toast: true,
+    position: 'top-end',
+    icon: 'success',
+    title: `${nuevoProd.nombre} agregado al carrito`,
+    showConfirmButton: false,
+    timer: 2000
+  });
 }
 
-// FUNCION ELIMIENAR CARRITO
 function eliminarDelCarrito(id) {
   carrito = carrito.filter(producto => producto.id !== id);
   actualizarLocalStorage();
   mostrarCarrito();
 }
 
-// CALCULAR CARRITO
 function calcularTotal() {
-  return carrito.reduce((total, producto) => total + producto.precio, 0);
+  return carrito.reduce((total, p) => total + p.precio * p.cantidad, 0);
 }
 
-// CARRITO LOCALSTORAGE
 function actualizarLocalStorage() {
   localStorage.setItem("carrito", JSON.stringify(carrito));
 }
 
-// PRODUCTOS DOM
 function mostrarCarrito() {
-  const carritoContainer = document.getElementById("carrito-lista");
-  if (!carritoContainer) {
-      console.error("El contenedor del carrito no existe.");
-      return;
-  }
+  const container = document.getElementById("carrito-lista");
+  container.innerHTML = "";
 
-  carritoContainer.innerHTML = "";
   carrito.forEach(producto => {
-      const item = document.createElement("div");
-      item.textContent = `${producto.nombre} - $${producto.precio}`;
-      const btnEliminar = document.createElement("button");
-      btnEliminar.textContent = "Eliminar";
-      btnEliminar.onclick = () => eliminarDelCarrito(producto.id);
-      item.appendChild(btnEliminar);
-      carritoContainer.appendChild(item);
+    const item = document.createElement("div");
+    item.classList.add("mb-2");
+    item.innerHTML = `
+      <strong>${producto.nombre}</strong> x${producto.cantidad} - $${producto.precio * producto.cantidad}
+      <button class="btn btn-sm btn-danger ms-2">Eliminar</button>
+    `;
+    item.querySelector("button").onclick = () => eliminarDelCarrito(producto.id);
+    container.appendChild(item);
   });
 
-  const totalElemento = document.getElementById("total");
-  if (totalElemento) {
-      totalElemento.textContent = `Total: $${calcularTotal()}`;
-  } else {
-      console.error("El elemento con id='total' no existe en el DOM.");
-  }
+  document.getElementById("total").textContent = `Total: $${calcularTotal()}`;
 }
 
-// EVENTO BOTON AGREGARCARRITO
-document.querySelectorAll(".producto button").forEach(boton => {
-    boton.addEventListener("click", (event) => {
-        const productoDiv = event.target.closest(".producto");
-        const id = productoDiv.getAttribute("data-id");
-        const nombre = productoDiv.getAttribute("data-nombre");
-        const precio = parseFloat(productoDiv.getAttribute("data-precio"));
-        const nuevoProducto = new Producto(id, nombre, precio);
-        agregarAlCarrito(nuevoProducto);
+document.addEventListener("DOMContentLoaded", () => {
+  mostrarCarrito();
+
+  document.querySelectorAll(".btn-agregar").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      const div = e.target.closest(".producto");
+      const id = parseInt(div.getAttribute("data-id"));
+      const nombre = div.getAttribute("data-nombre");
+      const precio = parseFloat(div.getAttribute("data-precio"));
+  
+      if (!id || !nombre || !precio || isNaN(id) || isNaN(precio)) return;
+  
+      agregarAlCarrito(new Producto(id, nombre, precio));
     });
+  });
+  
+
+  const finalizarBtn = document.getElementById("finalizarCompra");
+  finalizarBtn.addEventListener("click", () => {
+    if (carrito.length === 0) {
+      Swal.fire("El carrito está vacío", "", "error");
+      return;
+    }
+
+    const resumen = carrito.map(p => `${p.nombre} x${p.cantidad} - $${p.precio * p.cantidad}`).join("<br>");
+    const total = calcularTotal();
+
+    Swal.fire({
+      title: "Resumen de Compra",
+      html: `${resumen}<br><br><strong>Total: $${total}</strong>`,
+      showCancelButton: true,
+      confirmButtonText: "Confirmar",
+    }).then(result => {
+      if (result.isConfirmed) {
+        carrito = [];
+        actualizarLocalStorage();
+        mostrarCarrito();
+        Swal.fire("Compra realizada", "Gracias por tu pedido", "success");
+      }
+    });
+  });
 });
-
-// INIT DOM CARRITO
-document.addEventListener("DOMContentLoaded", mostrarCarrito);
-
-
-
-
